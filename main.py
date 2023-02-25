@@ -5,7 +5,13 @@ from request_handler import RequestHandler
 
 app = Flask(__name__)
 DATA_DIR = Path.cwd() / "data"
-
+cmd_to_func = {
+    "filter": RequestHandler.filter,
+    "sort": RequestHandler.sort,
+    "map": RequestHandler.map,
+    "limit": RequestHandler.limit,
+    "unique": RequestHandler.unique
+}
 
 @app.post("/perform_query")
 def perform_query():
@@ -23,8 +29,8 @@ def perform_query():
 
     try:
         with open(DATA_DIR / file_name, "r", encoding="utf-8") as f:
-            first_result = getattr(RequestHandler, cmd1)(f, value1)
-            second_result = getattr(RequestHandler, cmd2)(first_result, value2)
+            first_result = cmd_to_func[cmd1](f, value1)
+            second_result = cmd_to_func[cmd2](first_result, value2)
     except (TypeError, ValueError) as e:
         abort(400, e)
 
