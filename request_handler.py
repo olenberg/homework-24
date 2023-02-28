@@ -1,4 +1,5 @@
 from typing import Iterator, Iterable, Union
+import re
 
 
 class RequestHandler:
@@ -31,3 +32,8 @@ class RequestHandler:
     @staticmethod
     def unique(iterable: Iterator, value="") -> set:
         return set(iterable)
+
+    @staticmethod
+    def regexp(iterable: Iterator, value: str) -> Iterable:
+        regexp = re.compile(rf"str({str})")
+        return filter(lambda line: regexp.search(line), value)
